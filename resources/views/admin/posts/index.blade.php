@@ -5,6 +5,12 @@
         <a class="btn btn-success mb-2" href="{{ route('admin.posts.create') }}">Add post</a>
         <div class="row justify-content-center">
             <div class="col-md-12">
+                @if(session('status'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('status') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
                 <div class="card">
                     <div class="card-header fs-5">Posts</div>
 
@@ -20,7 +26,7 @@
                             <tbody>
                             @forelse($posts as $post)
                                 <tr class="fs-6">
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $post->id }}</td>
                                     <td>{{ $post->title }}</td>
                                     <td>{{ $post->category->name }}</td>
                                     <td>

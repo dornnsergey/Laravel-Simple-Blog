@@ -25,7 +25,7 @@ class TagController extends Controller
     {
         Tag::create($request->validated());
 
-        return redirect()->route('admin.tags.index');
+        return redirect()->route('admin.tags.index')->with('status', 'Tag has been successfully created.');
     }
 
     public function edit(Tag $tag)
@@ -37,11 +37,19 @@ class TagController extends Controller
     {
         $tag->update($request->validated());
 
-        return redirect()->route('admin.tags.index');
+        return redirect()->route('admin.tags.index')->with('status', 'Tag has been successfully updated.');
     }
 
     public function destroy(Tag $tag)
     {
-        //
+        if ($tag->posts()->count()) {
+            foreach ($tag->posts as $post) {
+                $post->tags()->detach($tag);
+            }
+        }
+
+        $tag->delete();
+
+        return redirect()->route('admin.tags.index')->with('status', 'Tag has been successfully deleted.');
     }
 }

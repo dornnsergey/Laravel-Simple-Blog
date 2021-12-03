@@ -25,7 +25,7 @@ class CategoryController extends Controller
     {
         Category::create($request->validated());
 
-        return redirect()->route('admin.categories.index');
+        return redirect()->route('admin.categories.index')->with('status', 'Category has been successfully created.');
     }
 
     public function edit(Category $category)
@@ -37,13 +37,17 @@ class CategoryController extends Controller
     {
         $category->update($request->validated());
 
-        return redirect()->route('admin.categories.index');
+        return redirect()->route('admin.categories.index')->with('status', 'Category has been successfully updated.');
     }
 
     public function destroy(Category $category)
     {
+        if ($category->posts()->count()) {
+            return back()->withErrors(['error' => 'Cannot delete, category has posts.']);
+        }
+
         $category->delete();
 
-        return redirect()->route('admin.categories.index');
+        return redirect()->route('admin.categories.index')->with('status', 'Category has been successfully deleted.');
     }
 }

@@ -1,6 +1,6 @@
 # Laravel Beginner Blog 
 
-This is demo project that implements following features:
+The aim of this project to implement following features:
 
 
 **Routing and Controllers: Basics**	

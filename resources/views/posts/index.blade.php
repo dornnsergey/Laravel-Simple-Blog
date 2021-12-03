@@ -5,10 +5,26 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Posts</div>
+                    <div class="card-header fs-4 text-uppercase">{{ $title }}</div>
 
                     <div class="card-body">
-
+                        <div class="row mb-2">
+                            @foreach($posts as $post)
+                            <div class="col-md-4">
+                                <div class="d-flex justify-content-between">
+                                    <div class="text-muted">{{ $post->created_at->format('d F Y') }}</div>
+                                    <div class="text-primary">{{ $post->category->name }}</div>
+                                </div>
+                                <div class="text-center">
+                                    <a class="fs-1 text-decoration-none" href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a>
+                                </div>
+                                <div>{{ $post->text }}</div>
+                            </div>
+                            @endforeach
+                        </div>
+                        @if(Request::is('posts'))
+                        {{ $posts->links() }}
+                        @endif
                     </div>
                 </div>
             </div>
