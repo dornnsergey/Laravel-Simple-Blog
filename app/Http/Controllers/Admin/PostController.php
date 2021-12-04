@@ -8,6 +8,7 @@ use App\Http\Requests\EditPostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -27,9 +28,16 @@ class PostController extends Controller
 
     public function store(CreatePostRequest $request)
     {
+
+        if ($request->has('file')) {
+            $filename = time() . '_' . $request->file('file')->getClientOriginalName();
+            $request->file('file')->storeAs('images', $filename, 'public');
+        }
+
         $post = Post::create([
-            'title' => $request->title,
-            'text' => $request->text,
+            'title'       => $request->title,
+            'img'         => $filename ?? null,
+            'text'        => $request->text,
             'category_id' => $request->category,
         ]);
 
@@ -54,9 +62,17 @@ class PostController extends Controller
 
     public function update(EditPostRequest $request, Post $post)
     {
+        if ($request->has('file')) {
+            Storage::delete('public/images/' . $post->img);
+
+            $filename = time() . '_' . $request->file('file')->getClientOriginalName();
+            $request->file('file')->storeAs('images', $filename, 'public');
+        }
+
         $post->update([
-            'title' => $request->title,
-            'text' => $request->text,
+            'title'       => $request->title,
+            'img'         => $filename ?? null,
+            'text'        => $request->text,
             'category_id' => $request->category,
         ]);
 

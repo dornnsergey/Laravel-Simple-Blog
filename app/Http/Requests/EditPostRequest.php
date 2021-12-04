@@ -25,6 +25,7 @@ class EditPostRequest extends FormRequest
     {
         return [
             'title'    => 'required',
+            'file'     => 'nullable|image',
             'text'     => 'required',
             'category' => 'required|exists:categories,id',
             'tags'     => 'required'

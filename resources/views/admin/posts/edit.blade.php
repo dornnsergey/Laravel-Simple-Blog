@@ -8,7 +8,8 @@
                     <div class="card-header text-primary">Edit post</div>
 
                     <div class="card-body">
-                        <form action="{{ route('admin.posts.update', $post->id) }}" method="POST">
+                        <form action="{{ route('admin.posts.update', $post->id) }}" method="POST"
+                              enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="mb-3">
@@ -20,12 +21,17 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
+                                <label for="file" class="form-label">File input</label>
+                                <input class="form-control" type="file" id="file" name="file" value="{{ old('file') }}">
+                            </div>
+                            <div class="mb-3">
                                 <label for="category" class="form-label">Category</label>
                                 <select class="form-control @error('category') is-invalid @enderror" id="category"
                                         name="category" required>
                                     <option value="0"> ---SELECT CATEGORY---</option>
                                     @foreach($categories as $category)
-                                        <option value="{{ $category->id }}" @if($category->id == $post->category_id) selected @endif>{{ $category->name }}</option>
+                                        <option value="{{ $category->id }}"
+                                                @if($category->id == $post->category_id) selected @endif>{{ $category->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('category')
